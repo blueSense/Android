@@ -10,9 +10,22 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        releaseConfig {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+
+    }
     buildTypes {
+        debug {
+        }
         release {
+            signingConfig  signingConfigs.releaseConfig
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
