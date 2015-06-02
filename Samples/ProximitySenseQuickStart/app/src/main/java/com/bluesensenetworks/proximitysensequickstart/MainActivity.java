@@ -24,9 +24,9 @@ public class MainActivity extends ActionBarActivity  implements RangingListener 
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
     // Overwrite with your ProximitySense Application Id and Private Key
-    private static final String APPLICATION_ID = "b8a40a875eb64e6aa2e79a8bae948da9";
-    private static final String PRIVATE_KEY = "M5vjqSpzrdGTNlqDQn8hymmL1lnpOihIOPSjlAFsoo";
-    private static final String BEACONS_UUID = "A0B13730-3A9A-11E3-AA6E-0800200C9A66";
+    private static final String APPLICATION_ID = "YOUR APP ID";
+    private static final String PRIVATE_KEY = "YOUR APP PRIVATE KEY";
+    private static final String BEACONS_UUID = "A0B13730-3A9A-11E3-AA6E-0800200C9A66"; // Blue Sense Networks' factory beacon UUID
 
     ApiOperations api;
     RangingManager rangingManager;
@@ -45,7 +45,6 @@ public class MainActivity extends ActionBarActivity  implements RangingListener 
     private void initProximitySenseSDK() {
 
         api = ProximitySenseSDK.getApi(this);
-//        api.setBaseUrl("http://192.168.0.15/BSN.Platform/api/v1/");
         api.setApiCredentials(new ApiCredentials(APPLICATION_ID, PRIVATE_KEY));
 
         rangingManager = ProximitySenseSDK.getRangingManager(this);
