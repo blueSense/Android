@@ -81,6 +81,6 @@ public abstract class ActionBase implements Parcelable {
 	}
 
 	public static void registerCommonActionTypes() {
-		registerActionType("richContent", "RichContentAction");
+		registerActionType("richContent", "com.bluesensenetworks.proximitysense.model.actions.RichContentAction");
 	}
 }

@@ -24,10 +24,9 @@ import com.google.gson.reflect.TypeToken;
 
 class GetActionsRequest extends ApiAppRequest<List<ActionBase>> {
 
-	public GetActionsRequest(ApiCredentials apiCredentials, AppUser appUser, Listener<List<ActionBase>> listener,
-	                         ErrorListener errorListener) {
-		super(new TypeToken<List<ActionBase>>() {
-		}.getType(), apiCredentials, appUser, Method.GET, ApiOperations.API_ROOT + "decision", null, listener, errorListener);
+	public GetActionsRequest(String apiBaseUrl, ApiCredentials apiCredentials, AppUser appUser, Listener<List<ActionBase>> listener,
+							 ErrorListener errorListener) {
+		super(new TypeToken<List<ActionBase>>() {}.getType(), apiCredentials, appUser, Method.GET, apiBaseUrl + "decision", null, listener, errorListener);
 	}
 
 	@Override

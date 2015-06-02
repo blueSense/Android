@@ -23,7 +23,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class ApiOperations {
-	protected static final String API_ROOT = "https://platform.proximitysense.com/api/v1/";
 	protected static final String INTENT_ACTION_RECEIVED = "com.bluesensenetworks.proximitysense.INTENT_ACTION_RECEIVED";
 	protected static final String EXTRA_ACTION = "com.bluesensenetworks.proximitysense.EXTRA_ACTION";
 	private static final String TAG = ApiOperations.class.getSimpleName();
@@ -32,6 +31,7 @@ public class ApiOperations {
 	private RequestQueue requestQueue;
 	private ApiCredentials apiCredentials;
 	private AppUser appUser = new AppUser();
+	private String apiBaseUrl = "https://platform.proximitysense.com/api/v1/";
 
 	private class PostResponseData {
 		public String result;
@@ -57,6 +57,14 @@ public class ApiOperations {
 		return instance;
 	}
 
+	public String getBaseUrl() {
+		return apiBaseUrl;
+	}
+
+	public void setBaseUrl(String apiBaseUrl) {
+		this.apiBaseUrl = apiBaseUrl;
+	}
+
 	public ApiCredentials getApiCredentials() {
 		return apiCredentials;
 	}
@@ -76,7 +84,7 @@ public class ApiOperations {
 	public void requestAuthKeyPairForUser(String username, String password, final ApiOperationListener<ApiCredentials> responseListener) {
 		Log.i(TAG, "Login request, username: " + username);
 
-		requestQueue.add(new LoginRequest(username, password, new Listener<ApiCredentials>() {
+		requestQueue.add(new LoginRequest(apiBaseUrl, username, password, new Listener<ApiCredentials>() {
 
 			@Override
 			public void onResponse(ApiCredentials apiCredentials) {
@@ -99,7 +107,7 @@ public class ApiOperations {
 
 	public void requestBeaconDetails(final DetectedBeacon beacon, final ApiOperationListener<DetectedBeacon> responseListener) {
 		Log.i(TAG, "Request beacon configuration, serialNumber: " + beacon.getSerialNumber());
-		String url = ApiOperations.API_ROOT + "configuration?includeAll=true&serialNumber=" + beacon.getSerialNumber();
+		String url = apiBaseUrl + "configuration?includeAll=true&serialNumber=" + beacon.getSerialNumber();
 
 		ApiRequest<BeaconResponseData> getBeaconRequest = new ApiRequest<>(BeaconResponseData.class, apiCredentials, Method.GET, url, null,
 				new Listener<BeaconResponseData>() {
@@ -125,7 +133,7 @@ public class ApiOperations {
 
 	public void updateBeaconDetails(DetectedBeacon beacon) {
 		Log.i(TAG, "Update beacon configuration, serialNumber: " + beacon.getSerialNumber());
-		String url = ApiOperations.API_ROOT + "configuration?serialNumber=" + beacon.getSerialNumber();
+		String url = apiBaseUrl + "configuration?serialNumber=" + beacon.getSerialNumber();
 
 		requestQueue.add(new ApiRequest<PostResponseData>(PostResponseData.class, apiCredentials, Method.POST, url, buildRequestBody(new UpdateBeaconRequestData(beacon)),
 				new Listener<PostResponseData>() {
@@ -144,7 +152,7 @@ public class ApiOperations {
 
 	public void registerBeacon(final DetectedBeacon beacon, final ApiOperationListener<DetectedBeacon> responseListener) {
 		Log.i(TAG, "Register not owned beacon, serialNumber: " + beacon.getSerialNumber());
-		String url = ApiOperations.API_ROOT + "beaconRegistration?serialNumber=" + beacon.getSerialNumber();
+		String url = apiBaseUrl + "beaconRegistration?serialNumber=" + beacon.getSerialNumber();
 
 		requestQueue.add(new ApiRequest<PostResponseData>(PostResponseData.class, apiCredentials, Method.POST, url, null, new Listener<PostResponseData>() {
 			@Override
@@ -176,7 +184,7 @@ public class ApiOperations {
 							sighting.getMajor(), sighting.getMinor(), sighting.getProximity()));
 		}
 
-		String url = ApiOperations.API_ROOT + "ranging?willPoll=true";
+		String url = apiBaseUrl + "ranging?willPoll=true";
 
 		requestQueue.add(new ApiAppRequest<String>(String.class, apiCredentials, appUser, Method.POST, url, buildRequestBody(sightings),
 				new Listener<String>() {
@@ -197,7 +205,7 @@ public class ApiOperations {
 	public void requestAvailableActionResults(final ApiOperationListener<List<ActionBase>> responseListener) {
 		Log.i(TAG, "Request decision");
 
-		requestQueue.add(new GetActionsRequest(apiCredentials, appUser,
+		requestQueue.add(new GetActionsRequest(apiBaseUrl, apiCredentials, appUser,
 				new Listener<List<ActionBase>>() {
 					@Override
 					public void onResponse(List<ActionBase> actions) {
@@ -223,7 +231,7 @@ public class ApiOperations {
 		Log.i(TAG, "Request applications");
 
 		requestQueue.add(new ApiRequest<List<Application>>(new TypeToken<List<Application>>() {
-		}.getType(), apiCredentials, Method.GET, ApiOperations.API_ROOT + "applications", null,
+		}.getType(), apiCredentials, Method.GET, apiBaseUrl + "applications", null,
 				new Listener<List<Application>>() {
 					@Override
 					public void onResponse(List<Application> applications) {
@@ -247,7 +255,7 @@ public class ApiOperations {
 		Log.i(TAG, "Request user profile");
 
 		requestQueue.add(new ApiAppRequest<UserProfile>(UserProfile.class, apiCredentials, appUser, Method.GET,
-				ApiOperations.API_ROOT + "profile", null,
+				apiBaseUrl + "profile", null,
 				new Listener<UserProfile>() {
 					@Override
 					public void onResponse(UserProfile userProfile) {
@@ -269,7 +277,7 @@ public class ApiOperations {
 		Log.i(TAG, "Update AppUser");
 
 		requestQueue.add(new ApiAppRequest<String>(String.class, apiCredentials, appUser, Method.POST,
-				ApiOperations.API_ROOT + "appUser", buildRequestBody(new AppUserRequestData(this.appUser)),
+				apiBaseUrl + "appUser", buildRequestBody(new AppUserRequestData(this.appUser)),
 				new Listener<String>() {
 					@Override
 					public void onResponse(String s) {
@@ -301,7 +309,7 @@ public class ApiOperations {
 	                                               final ApiOperationListener<TResponseData> responseListener, Type responseDataType) {
 
 		requestQueue.add(new ApiAppRequest<TResponseData>(responseDataType, apiCredentials, appUser, Method.GET,
-				ApiOperations.API_ROOT + endpoint, null,
+				apiBaseUrl + endpoint, null,
 				new Listener<TResponseData>() {
 					@Override
 					public void onResponse(TResponseData responseData) {
@@ -323,7 +331,7 @@ public class ApiOperations {
 	                                                             final ApiOperationListener<TResponseData> responseListener, final Type responseDataType) {
 
 		requestQueue.add(new ApiAppRequest<TResponseData>(responseDataType, apiCredentials, appUser, Method.POST,
-				ApiOperations.API_ROOT + endpoint, buildRequestBody(requestData),
+				apiBaseUrl + endpoint, buildRequestBody(requestData),
 				new Listener<TResponseData>() {
 					@Override
 					public void onResponse(TResponseData responseData) {

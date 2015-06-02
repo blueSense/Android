@@ -2,6 +2,7 @@ package com.bluesensenetworks.proximitysense;
 
 import android.content.Context;
 
+import com.bluesensenetworks.proximitysense.le.BleUtils;
 import com.bluesensenetworks.proximitysense.model.ApiOperations;
 import com.bluesensenetworks.proximitysense.model.RangingManager;
 
@@ -14,5 +15,9 @@ public class ProximitySenseSDK {
 
 	public static RangingManager getRangingManager(Context context) {
 		return RangingManager.getInstanceForApplication(context, ProximitySenseSDK.getApi(context));
+	}
+
+	public static BleUtils getBleUtils(Context context) {
+		return BleUtils.getInstanceForApplication(context);
 	}
 }

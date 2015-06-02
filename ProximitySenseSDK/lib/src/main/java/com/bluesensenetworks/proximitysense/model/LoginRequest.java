@@ -21,10 +21,9 @@ class LoginRequest extends JsonRequest<ApiCredentials> {
 	private static final String KEY_CLIENT_ID = "clientId";
 	private static final String KEY_PRIVATE_KEY = "privateKey";
 
-	public LoginRequest(String username, String password, Listener<ApiCredentials> listener, ErrorListener errorListener) {
+	public LoginRequest(String apiBaseUrl, String username, String password, Listener<ApiCredentials> listener, ErrorListener errorListener) {
 
-		super(Method.POST, ApiOperations.API_ROOT + "auth/BeginSession",
-				BuildRequestBody(username, password), listener, errorListener);
+		super(Method.POST, apiBaseUrl + "auth/BeginSession", BuildRequestBody(username, password), listener, errorListener);
 	}
 
 	@Override
