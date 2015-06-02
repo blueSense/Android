@@ -3,15 +3,14 @@ package com.bluesensenetworks.proximitysensequickstart;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.bluesensenetworks.proximitysense.ProximitySenseSDK;
-import com.bluesensenetworks.proximitysense.model.ApiCredentials;
 import com.bluesensenetworks.proximitysense.model.ApiOperations;
 import com.bluesensenetworks.proximitysense.model.RangingListener;
 import com.bluesensenetworks.proximitysense.model.RangingManager;
@@ -19,7 +18,7 @@ import com.bluesensenetworks.proximitysense.model.actions.ActionBase;
 import com.bluesensenetworks.proximitysense.model.actions.RichContentAction;
 
 
-public class MainActivity extends ActionBarActivity  implements RangingListener {
+public class MainActivity extends AppCompatActivity implements RangingListener {
 
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
@@ -44,10 +43,10 @@ public class MainActivity extends ActionBarActivity  implements RangingListener 
 
     private void initProximitySenseSDK() {
 
-        api = ProximitySenseSDK.getApi(this);
-        api.setApiCredentials(new ApiCredentials(APPLICATION_ID, PRIVATE_KEY));
+        ProximitySenseSDK.initialize(this, APPLICATION_ID, PRIVATE_KEY);
+        api = ProximitySenseSDK.getApi();
 
-        rangingManager = ProximitySenseSDK.getRangingManager(this);
+        rangingManager = ProximitySenseSDK.getRangingManager();
         rangingManager.setRangingListener(this);
         rangingManager.startForUuid(BEACONS_UUID);
 
@@ -88,7 +87,7 @@ public class MainActivity extends ActionBarActivity  implements RangingListener 
 
     private void verifyBluetooth() {
         try {
-            if (!ProximitySenseSDK.getBleUtils(this).checkBleAvailability()) {
+            if (!ProximitySenseSDK.getBleUtils().checkBleAvailability()) {
                 // BT is not turned on - ask user to make it enabled
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, ENABLE_BT_REQUEST_ID);

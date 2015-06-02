@@ -34,7 +34,7 @@ class ApiRequest<T> extends JsonRequest<T> {
 		super(method, url, requestBody, listener, errorListener);
 
 		if (apiCredentials == null) {
-			throw new IllegalArgumentException("apiCredentials cannot be null. Call 'requestAuthKeyPairForUser' first.");
+			throw new IllegalArgumentException("apiCredentials cannot be null.");
 		}
 
 		this.responseDataType = responseDataType;
@@ -46,13 +46,9 @@ class ApiRequest<T> extends JsonRequest<T> {
 	public Map<String, String> getHeaders() {
 		HashMap<String, String> headers = new HashMap<String, String>();
 		headers.put("X-Authorization-ClientId", apiCredentials.getClientId());
-		headers.put(
-				"X-Authorization-Signature",
-				Utils.generateHash(
-						this.getUrl() + (requestBody == null ? "" : requestBody) + apiCredentials.getPrivateKey())
-						.toLowerCase(Locale.US));
-		headers.put("X-ProximitySense-SdkPlatformAndVersion",
-				String.format("Android %s - %s", android.os.Build.VERSION.RELEASE, ProximitySenseSDK.PROXIMITYSENSESDK_VERSION));
+		headers.put("X-Authorization-Signature", Utils.generateHash(this.getUrl() + (requestBody == null ? "" : requestBody) + apiCredentials.getPrivateKey()).toLowerCase(Locale.US));
+		headers.put("X-ProximitySense-SdkPlatformAndVersion", String.format("Android %s - %s", android.os.Build.VERSION.RELEASE, ProximitySenseSDK.PROXIMITYSENSESDK_VERSION));
+
 		return headers;
 	}
 
@@ -73,7 +69,7 @@ class ApiRequest<T> extends JsonRequest<T> {
 
 	@Override
 	protected VolleyError parseNetworkError(VolleyError volleyError) {
-		Log.w(TAG, "BSN Platform returned error response", volleyError);
+		Log.w(TAG, "Error response", volleyError);
 
 		return volleyError;
 	}
