@@ -35,8 +35,6 @@ Setting up your project:
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.altbeacon:android-beacon-library:2+@aar'
 ```
-Note: ProximitySense SDK has the following dependencies: 
-Google GSon, Volley library and Radius Networks' Android AltBeacon Library
 
 4. Don't forget to add the following 2 lines into your AndroidManifest.xml file, to allow access to the Bluetooth hardware on the device:
 ``` xml
