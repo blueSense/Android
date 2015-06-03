@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     // Overwrite with your ProximitySense Application Id and Private Key
     private static final String APPLICATION_ID = "YOUR APP ID";
     private static final String PRIVATE_KEY = "YOUR APP PRIVATE KEY";
+
+
     private static final String BEACONS_UUID = "A0B13730-3A9A-11E3-AA6E-0800200C9A66"; // Blue Sense Networks' factory beacon UUID
 
     ApiOperations api;
@@ -115,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     protected void onPause() {
         super.onPause();
 
-//		// RangingManager will make less frequent BLE scans when application is
-//		// in background in order to preserve battery life
+		// RangingManager will make less frequent BLE scans when application is
+		// in background in order to preserve battery life
         rangingManager.setBackgroundMode(true);
     }
 
