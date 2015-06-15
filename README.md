@@ -1,6 +1,6 @@
 # Android
 
-SDK binary release, source code and code samples to integrate [ProximitySense](http://proximitysense.com) technology into Android.  
+SDK binary release, source code and code samples to integrate [ProximitySense](http://proximitysense.com) technology into Android native apps.  
 Copyright 2014 [Blue Sense Networks](http://bluesensenetworks.com)
 
 
@@ -8,7 +8,7 @@ Copyright 2014 [Blue Sense Networks](http://bluesensenetworks.com)
 
 ## ProximitySenseSDK
 
-The ProximitySenseSDK folder keeps the source code for the ProximitySenseSDK, which you need in order to get your apps ProximitySense enabled.
+The ProximitySenseSDK folder keeps the source code for the ProximitySenseSDK, which you need in order to get your apps [ProximitySense](http://proximitysense.com) enabled.
 The most recent binary release is in the **release** folder, built and packaged as an AAR.
 
 ### Dependencies
