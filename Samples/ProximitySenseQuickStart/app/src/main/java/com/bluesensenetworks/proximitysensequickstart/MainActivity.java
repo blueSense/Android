@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
         rangingManager = ProximitySenseSDK.getRangingManager();
         rangingManager.setRangingListener(this);
         rangingManager.startForUuid(BEACONS_UUID);
-
     }
 
     @Override
@@ -80,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     protected void onResume() {
         super.onResume();
 
+        if (APPLICATION_ID == "YOUR APP ID" || PRIVATE_KEY == "YOUR APP PRIVATE KEY")
+        {
+            ProximitySenseSDK.getRangingManager().stop();
+            Toast.makeText(this, "APPLICATION_ID and PRIVATE_KEY are not set! Read how to set them correctly in MainActivity.java.", Toast.LENGTH_LONG).show();
+        }
         // check if BLE is available and Bluetooth is enabled
         verifyBluetooth();
 

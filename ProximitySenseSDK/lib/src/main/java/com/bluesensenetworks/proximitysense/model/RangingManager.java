@@ -42,6 +42,7 @@ public class RangingManager {
 
 	private Handler timer;
 	private Runnable pollTask;
+    private RangingManagerStatus status = RangingManagerStatus.Stopped;
 
 	private BeaconConsumer beaconConsumer = new BeaconConsumer() {
 		@Override
@@ -50,7 +51,7 @@ public class RangingManager {
 			beaconManager.setRangeNotifier(new RangeNotifier() {
 				@Override
 				public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-					Log.i(TAG, "Ranged " + beacons.size() + " beacons in region " + region.getId1());
+//					Log.i(TAG, "Ranged " + beacons.size() + " beacons in region " + region.getId1());
 					if (beacons.size() > 0)
 						blueBarApi.reportBeaconSightings(new ArrayList<Beacon>(beacons));
 				}
@@ -85,12 +86,18 @@ public class RangingManager {
 		}
 
 		@Override
-		public void failure(String reason) {
-
+		public void failure(int statusCode, String reason) {
+            if (statusCode == 401) // Unauthorized
+            {
+                stop();
+            }
 		}
 	};
 
 	private void startRanging() {
+        if (status != RangingManagerStatus.Starting)
+            return;
+
 		if (rangingRegion != null) {
 			Log.i(TAG, "Starting ranging for region " + rangingRegion.getId1());
 			try {
@@ -99,7 +106,9 @@ public class RangingManager {
 				Log.e(TAG, "Error starting ranging", e);
 			}
 		}
-	}
+
+        status = RangingManagerStatus.Started;
+    }
 
 	public RangingListener getRangingListener() {
 		return this.rangingListener;
@@ -116,10 +125,13 @@ public class RangingManager {
 		// configure AndroidBeaconLibrary to detect iBeacons
 		beaconManager = BeaconManager.getInstanceForApplication(context.getApplicationContext());
 		beaconManager.getBeaconParsers().add(
-				new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+                new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 	}
 
 	public void startForUuid(String uuid) {
+
+        status = RangingManagerStatus.Starting;
+
 		rangingRegion = new Region("BlueBar Beacon Region", Identifier.parse(uuid), null, null);
 
 		if (beaconManager.isBound(beaconConsumer)) {
@@ -137,15 +149,19 @@ public class RangingManager {
 			@Override
 			public void run() {
 				blueBarApi.requestAvailableActionResults(actionsListener);
-				timer.postDelayed(this, 2000);
+				timer.postDelayed(this, 1000);
 			}
 		};
-		timer.postDelayed(pollTask, 2000);
+		timer.postDelayed(pollTask, 1000);
 	}
 
 	public void stop() {
-		try {
-			beaconManager.stopRangingBeaconsInRegion(rangingRegion);
+        status = RangingManagerStatus.Stopping;
+
+        try {
+            if (beaconManager.isBound(beaconConsumer)) {
+                beaconManager.stopRangingBeaconsInRegion(rangingRegion);
+            }
 		} catch (RemoteException e) {
 			Log.e(TAG, "Error stopping ranging", e);
 		}
@@ -155,6 +171,8 @@ public class RangingManager {
 			timer.removeCallbacks(pollTask);
 			timer = null;
 		}
+
+        status = RangingManagerStatus.Stopped;
 	}
 
 	public void setBackgroundMode(boolean backgroundMode) {

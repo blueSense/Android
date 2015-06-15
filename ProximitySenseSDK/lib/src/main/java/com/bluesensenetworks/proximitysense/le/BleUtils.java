@@ -1,6 +1,5 @@
 package com.bluesensenetworks.proximitysense.le;
 
-import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
@@ -25,11 +24,12 @@ public class BleUtils {
         if (android.os.Build.VERSION.SDK_INT < 18) {
             throw new BleNotAvailableException("Bluetooth LE is not supported by this device");
         }
+
 		if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 			throw new BleNotAvailableException("Bluetooth LE is not supported by this device");
 		}		
 		else {
-			if (((BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().isEnabled()){
+			if (((android.bluetooth.BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter().isEnabled()){
 				return true;
 			}
 		}	

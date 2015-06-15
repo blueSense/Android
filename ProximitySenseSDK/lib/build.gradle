@@ -5,10 +5,10 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
     }
     signingConfigs {
         releaseConfig {
@@ -33,13 +33,13 @@ android {
 
 android.libraryVariants.all { variant ->
     variant.outputs.each { output ->
-        output.outputFile = new File(output.outputFile.parent, "ProximitySenseSDK-" + "1.0" + ".aar")
+        output.outputFile = new File(output.outputFile.parent, "ProximitySenseSDK-" + "1.0.1" + ".aar")
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.0.0'
+//    compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.altbeacon:android-beacon-library:2+@aar'
 }

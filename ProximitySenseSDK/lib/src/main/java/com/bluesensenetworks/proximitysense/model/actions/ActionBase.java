@@ -67,7 +67,7 @@ public abstract class ActionBase implements Parcelable {
 		sighting = new Sighting(in);
 	}
 
-	private static Map<String, String> actionTypes = new HashMap<>();
+	private static Map<String, String> actionTypes = new HashMap<String, String>();
 
 	public static void registerActionType(String name, String className) {
 		actionTypes.put(name, className);

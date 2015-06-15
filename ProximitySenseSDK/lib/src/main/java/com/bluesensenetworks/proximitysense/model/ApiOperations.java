@@ -119,7 +119,7 @@ public class ApiOperations {
 					public void onErrorResponse(VolleyError error) {
 						Log.e(TAG, "Failed to retrieve actions: " + error.getMessage());
 						if (responseListener != null) {
-							responseListener.failure(error.getLocalizedMessage());
+							responseListener.failure(error.networkResponse.statusCode, error.getLocalizedMessage());
 						}
 					}
 				}));
@@ -174,7 +174,7 @@ public class ApiOperations {
 					public void onErrorResponse(VolleyError error) {
 						Log.e(TAG, "Failed to retrieve data from platform: " + error.getMessage());
 						if (responseListener != null)
-							responseListener.failure(error.getLocalizedMessage());
+							responseListener.failure(error.networkResponse.statusCode, error.getLocalizedMessage());
 					}
 				}));
 	}
@@ -196,7 +196,7 @@ public class ApiOperations {
 					public void onErrorResponse(VolleyError error) {
 						Log.e(TAG, "Failed to send data to platform: " + error.getMessage());
 						if (responseListener != null)
-							responseListener.failure(error.getLocalizedMessage());
+							responseListener.failure(error.networkResponse.statusCode, error.getLocalizedMessage());
 					}
 				}));
 	}
