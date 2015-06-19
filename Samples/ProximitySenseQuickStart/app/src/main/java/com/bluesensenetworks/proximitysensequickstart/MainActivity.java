@@ -12,10 +12,14 @@ import android.widget.Toast;
 
 import com.bluesensenetworks.proximitysense.ProximitySenseSDK;
 import com.bluesensenetworks.proximitysense.model.ApiOperations;
+import com.bluesensenetworks.proximitysense.model.AppUser;
 import com.bluesensenetworks.proximitysense.model.RangingListener;
 import com.bluesensenetworks.proximitysense.model.RangingManager;
 import com.bluesensenetworks.proximitysense.model.actions.ActionBase;
 import com.bluesensenetworks.proximitysense.model.actions.RichContentAction;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements RangingListener {
@@ -23,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
     // Overwrite with your ProximitySense Application Id and Private Key
-    private static final String APPLICATION_ID = "YOUR APP ID";
-    private static final String PRIVATE_KEY = "YOUR APP PRIVATE KEY";
+    private static final String APPLICATION_ID = "64249fcdb2ac4ae195f31ede0b45dc21";
+    private static final String PRIVATE_KEY = "xJgcgEgSiGirzcQ7wvTrHS6ZJ5Q4rHoCe56Ol4Jmo";
 
 
     private static final String BEACONS_UUID = "A0B13730-3A9A-11E3-AA6E-0800200C9A66"; // Blue Sense Networks' factory beacon UUID
@@ -48,6 +52,21 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
         ProximitySenseSDK.initialize(this, APPLICATION_ID, PRIVATE_KEY);
         api = ProximitySenseSDK.getApi();
 
+        // AppUser represents the person that is currently using the app
+        AppUser appUser = api.getAppUser();
+        // Set the id of the current user. Should be set to whatever you use to uniquely identify your users - can be facebook id, email, guid etc.
+        appUser.setAppSpecificId("My User Id");
+        // Pass extra information about your user, such as name, email, photo url, date of birth etc.
+        Map<String, String> userMetadata = new HashMap<String, String>();
+        userMetadata.put("name", "John Snow");
+        userMetadata.put("email", "captain@thewatch.org");
+        userMetadata.put("company", "The Watch");
+        userMetadata.put("position", "Captain");
+
+        appUser.setUserMetadata(userMetadata);
+        api.updateAppUser(); // Don't forget to persist the extra user data
+
+        // Start listening for beacons
         rangingManager = ProximitySenseSDK.getRangingManager();
         rangingManager.setRangingListener(this);
         rangingManager.startForUuid(BEACONS_UUID);
