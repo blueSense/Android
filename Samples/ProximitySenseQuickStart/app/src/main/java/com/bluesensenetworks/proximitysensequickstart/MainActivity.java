@@ -27,9 +27,8 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
     // Overwrite with your ProximitySense Application Id and Private Key
-    private static final String APPLICATION_ID = "64249fcdb2ac4ae195f31ede0b45dc21";
-    private static final String PRIVATE_KEY = "xJgcgEgSiGirzcQ7wvTrHS6ZJ5Q4rHoCe56Ol4Jmo";
-
+    private static final String APPLICATION_ID = "YOUR APP ID";
+    private static final String PRIVATE_KEY = "YOUR APP PRIVATE KEY";
 
     private static final String BEACONS_UUID = "A0B13730-3A9A-11E3-AA6E-0800200C9A66"; // Blue Sense Networks' factory beacon UUID
 
