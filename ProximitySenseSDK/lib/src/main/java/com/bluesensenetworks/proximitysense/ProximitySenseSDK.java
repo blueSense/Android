@@ -8,7 +8,7 @@ import com.bluesensenetworks.proximitysense.model.ApiOperations;
 import com.bluesensenetworks.proximitysense.model.RangingManager;
 
 public final class ProximitySenseSDK {
-	public static final String PROXIMITYSENSESDK_VERSION = "1.0.1";
+	public static final String PROXIMITYSENSESDK_VERSION = "1.0.2";
     private static Context context;
 
     public static ApiOperations getApi() {

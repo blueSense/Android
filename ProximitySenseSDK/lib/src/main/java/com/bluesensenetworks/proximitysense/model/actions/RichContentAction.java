@@ -4,13 +4,15 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Map;
+
 public class RichContentAction extends ActionBase {
 	private boolean sendNotification;
 	private String notificationText;
 	private boolean sendContent;
 	private String content;
 	private String contentUrl;
-	private Bundle metadata;
+	private Map<String, String> metadata;
 
 	public boolean isSendNotification() {
 		return sendNotification;
@@ -52,11 +54,11 @@ public class RichContentAction extends ActionBase {
 		this.contentUrl = contentUrl;
 	}
 
-	public Bundle getMetadata() {
+	public Map<String, String> getMetadata() {
 		return metadata;
 	}
 
-	public void setMetadata(Bundle metadata) {
+	public void setMetadata(Map<String, String> metadata) {
 		this.metadata = metadata;
 	}
 
@@ -85,7 +87,7 @@ public class RichContentAction extends ActionBase {
 		dest.writeByte((byte) (sendContent ? 1 : 0));
 		dest.writeString(content);
 		dest.writeString(contentUrl);
-		dest.writeBundle(metadata);
+		dest.writeMap(metadata);
 	}
 
 	@Override
@@ -96,6 +98,6 @@ public class RichContentAction extends ActionBase {
 		sendContent = in.readByte() != 0;
 		content = in.readString();
 		contentUrl = in.readString();
-		metadata = in.readBundle();
+		in.readMap(metadata, null);
 	}
 }

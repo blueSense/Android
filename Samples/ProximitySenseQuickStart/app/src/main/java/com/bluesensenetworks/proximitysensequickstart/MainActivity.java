@@ -150,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements RangingListener {
             RichContentAction richContentAction = (RichContentAction) action;
             content.getSettings().setBlockNetworkImage(false);
             content.loadUrl(richContentAction.getContentUrl());
+
+            Map<String, String> metadata = richContentAction.getMetadata();
+            Toast.makeText(this, "Metadata: " + metadata, Toast.LENGTH_LONG)
+                    .show();
+
         }
     }
 }
