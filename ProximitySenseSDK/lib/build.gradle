@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
     }
     signingConfigs {
         releaseConfig {
@@ -32,7 +32,7 @@ android {
 
 android.libraryVariants.all { variant ->
     variant.outputs.each { output ->
-        output.outputFile = new File(output.outputFile.parent, "ProximitySenseSDK-" + "1.0.2" + ".aar")
+        output.outputFile = new File(output.outputFile.parent, "ProximitySenseSDK-" + "1.0.3" + ".aar")
     }
 }
 
